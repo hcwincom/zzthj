@@ -7,8 +7,7 @@
 /public/api
 /public/assets/dist
 /node_modules
-/data/
-!/data/install.lock
+/data
 /public/log
 /public/data
 /public/upload
