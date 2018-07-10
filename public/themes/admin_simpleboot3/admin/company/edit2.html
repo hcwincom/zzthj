@@ -1,0 +1,61 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:url('index')}">所有{$flag}</a></li>
+			<li><a href="{:url('add')}">添加{$flag}</a></li>
+			 <li class="active"><a>编辑{$flag}</a></li>
+		</ul>
+    
+    <form method="post" class="form-horizontal js-ajax-form margin-top-20" action="{:url('editPost')}">
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">名称</label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control"  value="{$info.name}" disabled>
+            </div>
+        </div>
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">标题<span class="form-required">*</span></label>
+            <div class="col-md-6 col-sm-10">
+                <input type="text" class="form-control"  name="title" value="{$info.title}" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">图片</label>
+            <div class="col-md-6 col-sm-10">
+            	<img id="old-pic1" src="{:cmf_get_image_url($info.content)}" style="width:400px;height:200px"/>
+				<a href="javascript:uploadOneImage('图片上传','#js-link-image1');newPic1();">上传新图片</a>
+				<input type="hidden" name="content" value="{$info.content}" id="js-link-image1" /> 
+               
+            </div>
+        </div>
+        
+        
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input type="hidden" name="id" value="{$info.id}">
+                <button type="submit" class="btn btn-primary js-ajax-submit">{:lang('SAVE')}</button>
+                <a class="btn btn-default" href="{:url('index')}">{:lang('BACK')}</a>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script>
+	 
+function newPic1(){
+	
+	var oldPic=$.trim($('#old-pic1').attr('src'));
+	var input=$('#js-link-image1').val(); 
+	var newPic="{:cmf_get_image_url('')}"+input; 
+	if(newPic!=''&&newPic!=oldPic){
+		$('#old-pic1').attr('src',newPic); 
+	}
+	setTimeout("newPic1()",1000);
+	
+}
+ 
+</script>
+</body>
+</html>

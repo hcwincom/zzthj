@@ -1,0 +1,169 @@
+<include file="public@header"/>
+<style >
+#cate{
+	width:100px;
+}
+#goods{
+	width:200px;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:url('index')}">所有{$flag}</a></li>
+			<li><a href="{:url('add')}">添加{$flag}</a></li>
+			 <li class="active"><a>编辑套装产品组成</a></li>
+		</ul>
+    
+    <form method="post" class="form-horizontal js-ajax-form1 margin-top-20" action="{:url('pros_editPost')}">
+       
+       <div class="form-group">
+				<label class="col-sm-2 control-label">套装名称 <span class="form-required">*</span></label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" name="name" value="{$info.name}" required>
+				</div>
+			</div>
+			
+			 
+        <div class="form-group">
+            <label  class="col-sm-2 control-label">套装副图1<span class="form-required">*</span></label>
+            <div class="col-md-6 col-sm-10">
+            	  
+                <img id="old-pic1" src="{:cmf_get_image_url($info.pic1)}" style="width:100px;height:100px"/>
+				<a href="javascript:uploadOneImage('图片上传','#js-link-image1');newPic1();">上传新图片</a>
+				<input type="hidden" name="pic1" value="{$info.pic1}" id="js-link-image1" required/>  
+            </div>
+        </div> 
+         <div class="form-group">
+            <label  class="col-sm-2 control-label">套装副图2<span class="form-required">*</span></label>
+            <div class="col-md-6 col-sm-10">
+            	  
+                <img id="old-pic2" src="{:cmf_get_image_url($info.pic2)}" style="width:100px;height:100px"/>
+				<a href="javascript:uploadOneImage('图片上传','#js-link-image2');newPic2();">上传新图片</a>
+				<input type="hidden" name="pic2" value="{$info.pic2}" id="js-link-image2" required/>  
+            </div>
+        </div> 
+       <div class="form-group">
+			<label class="col-sm-2 control-label">套装内组合</label>
+			<div class="col-md-6 col-sm-10">
+				<table  class="table table-hover table-bordered table-list">
+					 <thead><tr><th>产品名称-分量</th><th>产品数量</th><th>操作</th></tr></thead>
+					 <tbody>
+					
+					<foreach name="list" item="vo">
+					<tr class="tr">
+						<td>{$vo.name}-{$vo.much}{$vo.unit}/{$vo.pack}</td>
+					 
+						<td class="num">{$vo.num}</td>
+						<td><span class="btn btn-default del">删除</span></td>
+						<input type="hidden" class="id" value="{$vo.gid}"/>
+						<input type="hidden" name="ids[]" class="ids" value="{$vo.gid}-{$vo.num}"/>
+					</tr>
+					</foreach> 
+					
+					</tbody>
+				</table>
+				<br/>
+				分类<select id="cate">
+				<option value="0">选择分类</option>
+				<foreach name="cates" item="vo">
+					<option value="{$vo.id}" >{$vo.name}</option>
+				</foreach>
+				</select>
+				产品<select id="goods">
+					<option class="goods0" value="0">选择产品</option>
+				<foreach name="goods" item="vo"> 
+					<option class="goods{$vo.cid}" value="{$vo.id}" >{$vo.name}-{$vo.much}{$vo.unit}/{$vo.pack}</option>
+				</foreach>
+				</select>
+				数量<input type="text" id="zznum" value="1" style="width:50px;"/>
+				<button type="button" id="zzadd">添加</button>
+				 <span class="error" style="color:red;"></span>
+			</div>
+		</div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input type="hidden" name="id" value="{$info.id}">
+                <button type="submit" class="btn btn-primary js-ajax-submit">{:lang('SAVE')}</button>
+                <a class="btn btn-default" href="{:url('edit',['id'=>$info.id])}">{:lang('BACK')}</a>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+   
+function newPic1(){
+	var oldPic=$.trim($('#old-pic1').attr('src'));
+	var input=$('#js-link-image1').val();
+	var newPic="{:cmf_get_image_url('')}"+input; 
+	if(newPic!=''&&newPic!=oldPic){
+		$('#old-pic1').attr('src',newPic);
+	}
+	setTimeout("newPic1()",1000);
+}
+function newPic2(){
+	var oldPic=$.trim($('#old-pic2').attr('src'));
+	var input=$('#js-link-image2').val();
+	var newPic="{:cmf_get_image_url('')}"+input; 
+	if(newPic!=''&&newPic!=oldPic){
+		$('#old-pic2').attr('src',newPic);
+	}
+	setTimeout("newPic2()",1000);
+}
+$('#cate').change(function(){
+	var cid=this.value; 
+	$('#goods option').hide();
+	$('#goods .goods0').show();
+	$('#goods .goods'+cid).show();
+	//$('#goods .goods'+cid)[0].selected=true;
+	$('#goods .goods0').prop('selected',true);
+});
+ 
+$(document).on('click','.del',function(){
+	 
+	$(this).parents('tr').remove();
+});
+$(document).on('click','#zzadd',function(){ 
+	var id=$('#goods').val();
+	var num=parseInt($('#zznum').val());
+	var name=$('#goods option:selected').text();
+	var flag=0;
+	if(id=='0'){
+		$('.error').text('请选择产品');
+		$('#goods').focus();
+		return 0;
+	} 
+	if(num>0){
+		
+	}else{
+		$('.error').text('请填写产品数量');
+		$('#zznum').focus();
+		return 0;
+	}
+	$('.error').text();
+	$('.tr').each(function(){
+		var gid=$(this).find('.id').val(); 
+		if(id==gid){
+			var gnum=$(this).find('.num').text();
+			gnum=parseInt($.trim(gnum))+num;
+			$(this).find('.num').text(gnum);
+			$(this).find('.ids').val(id+'-'+gnum);
+			flag=1;
+			return 0;
+		}
+	});
+	if(flag==1){
+		return 0;
+	}
+	var tr='<tr class="tr"><td>'+name+
+	'</td><td class="num">'+num+
+	'</td><td><span class="btn btn-default del">删除</span>'+
+	'</td><input type="hidden" class="id" value="'+id+
+	'"/><input type="hidden" name="ids[]" class="ids" value="'+id+'-'+num+'"/><tr/>';
+	$('table tbody').append(tr);
+});
+</script>
+</body>
+</html>

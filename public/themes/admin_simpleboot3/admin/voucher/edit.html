@@ -1,0 +1,86 @@
+<include file="public@header" />
+<style>
+#zzsize input, #zzsize select {
+	display: inline-block;
+	width: 100px;
+	height: 30px;
+}
+</style>
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:url('index')}">所有{$flag}</a></li>
+			<li><a href="{:url('add')}">添加{$flag}</a></li>
+			<li class="active"><a>编辑{$flag}</a></li>
+		</ul>
+
+		<form method="post" class="form-horizontal js-ajax-form margin-top-20"
+			action="{:url('editPost')}">
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label">产品名称 </label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" 
+						value="{$info.pname}" readonly/>
+				</div>
+			</div>
+			 
+			<div class="form-group">
+				<label class="col-sm-2 control-label">产品价格(￥) </label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control"  
+						value="{$info.pprice}" readonly/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">提货券编码</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control"  value="{$info.sn}" readonly/>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label">提货券密码</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" value="{$info.psw}" readonly/>
+				</div>
+			</div>
+			 <div class="form-group">
+				<label class="col-sm-2 control-label">展示价格(￥) </label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control"  
+						value="{$info.show_money}" readonly/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">实际价格(￥) </label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control"  
+						value="{$info.real_money}" readonly/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">简介</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" name="dsc"
+						value="{$info.dsc}">
+				</div>
+			</div>
+		  
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+
+					<input type="hidden" name="id" value="{$info.id}">
+					<button type="submit" class="btn btn-primary js-ajax-submit">{:lang('SAVE')}</button>
+					<a class="btn btn-default" href="{:url('index')}">{:lang('BACK')}</a>
+				</div>
+			</div>
+		</form>
+	</div>
+	<script src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+    
+</script>
+</body>
+</html>

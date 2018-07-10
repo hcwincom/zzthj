@@ -1,0 +1,116 @@
+<include file="public@header" />
+<style>
+#zzsize input, #zzsize select {
+	display: inline-block;
+	width: 100px;
+	height: 30px;
+}
+</style>
+</head>
+<body>
+	<div class="wrap">
+		<ul class="nav nav-tabs">
+			<li><a href="{:url('index')}">所有{$flag}</a></li>
+			<li class="active"><a href="{:url('add')}">添加{$flag}</a></li>
+		</ul>
+		<form method="post" class="form-horizontal js-ajax-form margin-top-20"
+			action="{:url('addPost')}">
+			 
+			<div class="form-group">
+				<label class="col-sm-2 control-label">产品<span
+					class="form-required">*</span></label>
+				<div class="col-md-6 col-sm-10">
+					<select name="" id="cate">
+						<foreach name="cates" item="vo">
+						<option value="{$key}">{$vo}</option>
+						</foreach>
+					</select>
+					<select name="pid" id="goods">
+					 
+						<foreach name="goods" item="vo">
+						<option value="{$key}">
+						{$vo.name}-{$vo.price}
+						</option> 
+						</foreach>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">展示价格</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" name="show_money" id="show_money" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">实际价格</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" name="real_money" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">添加数量</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" name="count" required>
+				</div>
+			</div>
+		 
+			<div class="form-group">
+				<label class="col-sm-2 control-label">简介</label>
+				<div class="col-md-6 col-sm-10">
+					<input type="text" class="form-control" name="dsc"> 
+				</div>
+			</div>
+			  
+
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" class="btn btn-primary js-ajax-submit">{:lang('ADD')}</button>
+					<a class="btn btn-default" href="javascript:history.back(-1);">{:lang('BACK')}</a>
+				</div>
+			</div>
+		</form>
+	</div>
+	<script src="__STATIC__/js/admin.js"></script>
+	 
+	 
+	<script type="text/javascript">
+	var cate_url="{:url('admin/public/cate_goods')}";
+	price_set();
+	  $('#cate').change(function(){
+		  var cid=$(this).val();
+		 
+		  $.ajax({
+              type: 'POST',
+              url: cate_url,
+              dataType: 'json',
+              data:{'cid':cid},
+              success: function(data){
+            	  if(data.code==0){ 
+    				  return 0;
+    			  } 
+            	  var goods=data.data; 
+            	  var option=''; 
+    			  for(var b in goods){ 
+    				 option+='<option value="'+b+
+    				 '">'+goods[b]['name']+'-'+goods[b]['price']+
+    				 '</option>';
+    			  }   
+    			  $('#goods').html(option); 
+    			  price_set();
+              },
+              error: function(event, XMLHttpRequest, ajaxOptions, thrownError){ 
+              	$('body').append(event.responseText);
+              }
+          });
+	  });
+	  $('#goods').change(function(){
+		  price_set();
+	  });
+	  function price_set(){ 
+		  var goods=$('#goods').text();
+		  var arr = goods.split("-"); 
+		  $('#show_money').val(arr[arr.length-1]);
+	  }
+	</script>
+</body>
+</html>
