@@ -15,12 +15,12 @@ use PHPExcel_Style_Alignment;
 class VoucherController extends AdminbaseController {
 
     private $m;
-    private $order;
+   
     private $voucher_status;
     public function _initialize()
     {
         parent::_initialize(); 
-        $this->order='v.id asc';
+       
         $this->m=Db::name('voucher');
         $this->voucher_status=config('voucher_status');
         $this->assign('voucher_status', $this->voucher_status);
@@ -59,7 +59,7 @@ class VoucherController extends AdminbaseController {
          ->alias('v')
          ->join('cmf_goods p','p.id=v.pid')
          ->where($where)
-         ->order($this->order)
+         ->order('v.time desc,v.id desc')
          ->paginate(10);  
         
          // 获取分页显示
@@ -172,17 +172,18 @@ class VoucherController extends AdminbaseController {
         if($data['count']<=0 || $data['count']>1000 || $data['show_money']<=0){
             $this->error('数据错误');
         }
-        zz_log('开始生成'.$data['count'].'条记录了');
+       
         $vouchers=[];
         $time=time();
         $date=date('Ym');
         $time0=strtotime($date.'01');
-        $tmp=$m->where(['create_time'=>['egt',$time0]])->order('create_time desc')->find();
+        $tmp=$m->where(['create_time'=>['egt',$time0]])->order('create_time desc,id desc')->find();
         if(empty($tmp)){
             $start=0;
         }else{
             $start=intval(substr($tmp['sn'], 6)); 
         }
+        
         if(($start+$data['count'])>999999){
             $this->error('已经超过999999了');
         }
@@ -202,7 +203,6 @@ class VoucherController extends AdminbaseController {
             ];
         } 
         $counts=$m->insertAll($vouchers); 
-        zz_log('已经生成'.$counts.'条记录了');
         
         $this->success('已经生成'.$counts.'条记录了');
        
