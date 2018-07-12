@@ -252,10 +252,7 @@ class VoucherController extends AdminbaseController {
         
         $filename='提货卡'.date('Y-m-d-H-i-s').'.xls';
         $phpexcel = new PHPExcel();
-        
-        //设置文本格式
-        $str=PHPExcel_Cell_DataType::TYPE_STRING;
-        
+         
         //设置第一个sheet
         $phpexcel->setActiveSheetIndex(0);
         $sheet= $phpexcel->getActiveSheet();
@@ -278,8 +275,11 @@ class VoucherController extends AdminbaseController {
         //垂直居中
         $sheet->getDefaultStyle()->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
         //长度不够显示的时候 是否自动换行
-        $sheet->getDefaultStyle()->getAlignment()->setWrapText(true);  
-     
+        $sheet->getDefaultStyle()->getAlignment()->setWrapText(true); 
+        //设置文本格式
+        //$str=PHPExcel_Cell_DataType::TYPE_STRING;
+        $sheet->getStyle('C')->getNumberFormat()
+        ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
         //设置第一行
         $i=1;
        
