@@ -170,7 +170,7 @@ class VoucherController extends AdminbaseController {
             $this->error('数据错误');
         }
         if($data['count']<=0 || $data['count']>1000 || $data['show_money']<=0){
-            $this->error('数据错误');
+            $this->error('数据错误,数量请选择1-1000，价格大于0');
         }
        
         $vouchers=[];
@@ -199,7 +199,7 @@ class VoucherController extends AdminbaseController {
                 'dsc'=>$data['dsc'],
                 'uid'=>0,
                 'create_time'=>$time,
-                'time'=>time(),
+                'time'=>$time,
             ];
         } 
         $counts=$m->insertAll($vouchers); 
