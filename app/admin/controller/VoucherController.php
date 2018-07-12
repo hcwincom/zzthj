@@ -271,7 +271,7 @@ class VoucherController extends AdminbaseController {
         $sheet->getColumnDimension('A')->setWidth(5);
         $sheet->getColumnDimension('B')->setWidth(20);
         $sheet->getColumnDimension('C')->setWidth(20);
-        
+        $sheet->getColumnDimension('I')->setWidth(20);
         //设置水平居中
         $sheet->getDefaultStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         
@@ -287,11 +287,12 @@ class VoucherController extends AdminbaseController {
         ->setCellValue('A'.$i, '序号')
         ->setCellValue('B'.$i, '提货二维码')
         ->setCellValue('C'.$i, '提货编号') 
-        ->setCellValue('D'.$i, '状态')
-        ->setCellValue('E'.$i, '产品id')
-        ->setCellValue('F'.$i, '展示价格')
-        ->setCellValue('G'.$i, '实际价格')
-        ->setCellValue('H'.$i, '备注');
+        ->setCellValue('D'.$i, '提货密码') 
+        ->setCellValue('E'.$i, '状态')
+        ->setCellValue('F'.$i, '产品id')
+        ->setCellValue('G'.$i, '展示价格')
+        ->setCellValue('H'.$i, '实际价格')
+        ->setCellValue('I'.$i, '备注');
         //设置第一行
         import('phpqrcode',EXTEND_PATH);
         $tmp_pic= getcwd().'/upload/'.session('ADMIN_ID').'.png';
@@ -302,11 +303,12 @@ class VoucherController extends AdminbaseController {
            $sheet
            ->setCellValue('A'.$i, $i-1) 
            ->setCellValue('C'.$i, $v['sn'])
-           ->setCellValue('D'.$i, $statuss[$v['status']])
-           ->setCellValue('E'.$i, $v['pid'])
-           ->setCellValue('F'.$i, $v['show_money'])
-           ->setCellValue('G'.$i, $v['real_money'])
-           ->setCellValue('H'.$i, $v['dsc']);
+           ->setCellValue('D'.$i, $v['psw'])
+           ->setCellValue('E'.$i, $statuss[$v['status']])
+           ->setCellValue('F'.$i, $v['pid'])
+           ->setCellValue('G'.$i, $v['show_money'])
+           ->setCellValue('H'.$i, $v['real_money'])
+           ->setCellValue('I'.$i, $v['dsc']);
            //二维码图片
 //            $url = url('portal/thj/th',['sn'=>$v['sn']],true,true); 
            \QRcode::png($url.'/sn/'.$v['sn'], $tmp_pic, QR_ECLEVEL_L,2, 2); 
@@ -339,7 +341,7 @@ class VoucherController extends AdminbaseController {
             ),
         );
         
-        $sheet->getStyle('A1:H'.$i)->applyFromArray($styleArray);
+        $sheet->getStyle('A1:I'.$i)->applyFromArray($styleArray);
        
         //在浏览器输出
         header('Content-Type: application/vnd.ms-excel');

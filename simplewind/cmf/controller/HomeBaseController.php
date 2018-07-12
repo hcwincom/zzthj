@@ -19,6 +19,8 @@ class HomeBaseController extends BaseController
 
     public function _initialize()
     {
+        echo '<h1>网站还未开放<h2>';
+        exit();
         // 监听home_init
         hook('home_init');
         parent::_initialize();
