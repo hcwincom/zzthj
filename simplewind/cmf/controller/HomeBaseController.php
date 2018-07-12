@@ -19,7 +19,12 @@ class HomeBaseController extends BaseController
 
     public function _initialize()
     {
-        echo '<h1>网站还未开放<h2>';
+        $sn=$this->request->param('sn','');
+        if($sn!=''){
+            echo '<h1>提货编号'.$sn.'<h1>';
+        }
+       
+        echo '<h1>网站还未开放...<h1>';
         exit();
         // 监听home_init
         hook('home_init');

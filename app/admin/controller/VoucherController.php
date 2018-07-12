@@ -277,9 +277,8 @@ class VoucherController extends AdminbaseController {
         //长度不够显示的时候 是否自动换行
         $sheet->getDefaultStyle()->getAlignment()->setWrapText(true); 
         //设置文本格式
-        //$str=PHPExcel_Cell_DataType::TYPE_STRING;
-        $sheet->getStyle('C')->getNumberFormat()
-        ->setFormatCode(\PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+        $str=PHPExcel_Cell_DataType::TYPE_STRING;
+       
         //设置第一行
         $i=1;
        
@@ -295,22 +294,26 @@ class VoucherController extends AdminbaseController {
         ->setCellValue('I'.$i, '备注');
         //设置第一行
         import('phpqrcode',EXTEND_PATH);
-        $tmp_pic= getcwd().'/upload/'.session('ADMIN_ID').'.png';
+        $dir=getcwd().'/upload/qrcode/';
+         
         $url = url('portal/thj/th','',false,true); 
        foreach($list as $k=>$v){ 
            $i++;
            
            $sheet
            ->setCellValue('A'.$i, $i-1) 
-           ->setCellValue('C'.$i, $v['sn'])
            ->setCellValue('D'.$i, $v['psw'])
            ->setCellValue('E'.$i, $statuss[$v['status']])
            ->setCellValue('F'.$i, $v['pid'])
            ->setCellValue('G'.$i, $v['show_money'])
            ->setCellValue('H'.$i, $v['real_money'])
            ->setCellValue('I'.$i, $v['dsc'].$url);
+           
+           $sheet->setCellValueExplicit('C'.$i, $v['sn'],$str);
+            
            //二维码图片
 //            $url = url('portal/thj/th',['sn'=>$v['sn']],true,true); 
+           $tmp_pic=$dir.$v['sn'].'.png';
            \QRcode::png($url.'/sn/'.$v['sn'], $tmp_pic, QR_ECLEVEL_L,2, 2); 
            /*设置图片路径 切记：只能是本地图片*/
            $objDrawing = new PHPExcel_Worksheet_Drawing();
@@ -359,6 +362,32 @@ class VoucherController extends AdminbaseController {
         
         exit;
     }
+    /**
+     * 二维码删除
+     * @adminMenu(
+     *     'name'   => '二维码删除',
+     *     'parent' => 'qr_delete',
+     *     'display'=> false,
+     *     'hasView'=> false,
+     *     'order'  => 10,
+     *     'icon'   => '',
+     *     'remark' => '二维码删除',
+     *     'param'  => ''
+     * )
+     */
+    function qr_delete(){
+        $dir=getcwd().'/upload/qrcode/';
+        
+        $tmp=scandir($dir,1);
+        foreach($tmp as $k=>$v){
+            if(is_file($dir.$v)){
+                unlink($dir.$v);
+            }
+        }
+        $this->success('已清空二维码');
+        
+    }
+    
     /**
      * 提货券删除
      * @adminMenu(
