@@ -366,7 +366,7 @@ class VoucherController extends AdminbaseController {
      * 二维码删除
      * @adminMenu(
      *     'name'   => '二维码删除',
-     *     'parent' => 'qr_delete',
+     *     'parent' => 'index',
      *     'display'=> false,
      *     'hasView'=> false,
      *     'order'  => 10,
