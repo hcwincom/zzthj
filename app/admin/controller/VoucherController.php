@@ -308,7 +308,7 @@ class VoucherController extends AdminbaseController {
            ->setCellValue('F'.$i, $v['pid'])
            ->setCellValue('G'.$i, $v['show_money'])
            ->setCellValue('H'.$i, $v['real_money'])
-           ->setCellValue('I'.$i, $v['dsc']);
+           ->setCellValue('I'.$i, $v['dsc'].$url);
            //二维码图片
 //            $url = url('portal/thj/th',['sn'=>$v['sn']],true,true); 
            \QRcode::png($url.'/sn/'.$v['sn'], $tmp_pic, QR_ECLEVEL_L,2, 2); 
