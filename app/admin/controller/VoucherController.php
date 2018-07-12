@@ -264,7 +264,7 @@ class VoucherController extends AdminbaseController {
         $sheet->setTitle($filename);
        
         // 所有单元格默认高度
-        $sheet->getDefaultRowDimension()->setRowHeight(80);
+        $sheet->getDefaultRowDimension()->setRowHeight(60);
         $sheet->getDefaultColumnDimension()->setWidth(10);
        
         //单个宽度设置
@@ -316,9 +316,9 @@ class VoucherController extends AdminbaseController {
            $objDrawing = new PHPExcel_Worksheet_Drawing();
            $objDrawing->setPath($tmp_pic);
            /*设置图片高度*/
-           
-           $objDrawing->setHeight(100);//照片高度
-           $objDrawing->setWidth(100); //照片宽度
+           //默认原图大小，不设置
+          /*  $objDrawing->setHeight(60);//照片高度
+           $objDrawing->setWidth(60); //照片宽度 */
            
            /*设置图片要插入的单元格*/
            $objDrawing->setCoordinates('B'.$i);
